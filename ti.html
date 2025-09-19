@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Painel do TI — Central de Chamados</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="assets/logo.png" />
+</head>
+<body data-page="admin">
+  <header class="topbar">
+    <div class="brand">
+      <img src="assets/logo.png" alt="Logo" onerror="this.style.display='none'"/>
+      <div class="brand-text">
+        <h1 id="companyName">Safári Diversão • TI</h1>
+        <span class="subtitle">Painel do TI</span>
+      </div>
+      <nav class="nav">
+        <a class="link" href="index.html">↩ Voltar</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card" id="loginCard">
+      <h2>🔐 Acesso do TI</h2>
+      <p class="muted">Defina um PIN seguro. Se já existir, informe para entrar.</p>
+      <div class="grid">
+        <div class="field">
+          <label>PIN do TI</label>
+          <input id="pinInput" type="password" placeholder="Ex.: 4–8 dígitos" />
+        </div>
+        <div class="field">
+          <label>&nbsp;</label>
+          <button class="btn primary" id="entrarBtn">Entrar</button>
+        </div>
+      </div>
+      <details style="margin-top:10px">
+        <summary>Esqueci o PIN</summary>
+        <p class="muted">Para resetar, apague a chave <code>ti_pin</code> do localStorage (Ferramentas do desenvolvedor → Application → Local Storage). Isso não apaga os chamados.</p>
+      </details>
+    </section>
+
+    <section class="card" id="dashboardCard" hidden>
+      <div class="dash">
+        <div class="kpi kpi-blue"><div class="kpi-val" id="kpiAbertos">0</div><div class="kpi-label">Abertos</div></div>
+        <div class="kpi kpi-amber"><div class="kpi-val" id="kpiAndamento">0</div><div class="kpi-label">Em andamento</div></div>
+        <div class="kpi kpi-green"><div class="kpi-val" id="kpiConcluidos">0</div><div class="kpi-label">Concluídos</div></div>
+        <div class="kpi"><div class="kpi-val" id="kpiTotal">0</div><div class="kpi-label">Total</div></div>
+      </div>
+
+      <div class="list-header" style="margin-top:12px">
+        <h2>📋 Chamados</h2>
+        <div class="filters">
+          <input id="busca" type="search" placeholder="Buscar por protocolo, nome, setor…" />
+          <select id="filtroStatus">
+            <option value="Todos">Todos status</option>
+            <option>Aberto</option><option>Em andamento</option><option>Concluído</option>
+          </select>
+          <select id="filtroPrio">
+            <option value="Todas">Todas prioridades</option>
+            <option>Baixa</option><option>Média</option><option>Alta</option><option>Crítica</option>
+          </select>
+          <button class="btn" id="exportCsvBtn">Exportar CSV</button>
+          <button class="btn ghost" id="limparTudoBtn">Apagar todos</button>
+        </div>
+      </div>
+
+      <ul id="listaChamados" class="tickets"></ul>
+      <div id="vazio" class="empty" hidden><p>Nenhum chamado encontrado.</p></div>
+    </section>
+
+    <dialog id="editModal">
+      <form method="dialog" class="modal">
+        <h3>✏️ Editar chamado</h3>
+        <input type="hidden" id="editId" />
+        <div class="grid">
+          <div class="field"><label>Nome</label><input id="editNome" required/></div>
+          <div class="field"><label>E-mail</label><input id="editEmail" type="email" required/></div>
+          <div class="field"><label>Setor</label><input id="editSetor" required/></div>
+          <div class="field">
+            <label>Prioridade</label>
+            <select id="editPrioridade">
+              <option>Baixa</option><option>Média</option><option>Alta</option><option>Crítica</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Status</label>
+            <select id="editStatus">
+              <option>Aberto</option><option>Em andamento</option><option>Concluído</option>
+            </select>
+          </div>
+          <div class="field field-full"><label>Categoria</label><input id="editCategoria" /></div>
+          <div class="field field-full"><label>Descrição</label><textarea id="editProblema" rows="4"></textarea></div>
+        </div>
+        <div class="actions">
+          <button class="btn primary" id="salvarEdicaoBtn">Salvar</button>
+          <button class="btn ghost" value="cancel">Cancelar</button>
+        </div>
+      </form>
+    </dialog>
+  </main>
+
+  <div id="toast" class="toast"></div>
+  <footer class="footer">
+    <small>© <span id="year"></span> Safári Diversão • TI</small>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

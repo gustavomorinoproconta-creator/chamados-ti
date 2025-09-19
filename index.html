@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Central de Chamados - Abertura</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="assets/logo.png" />
+</head>
+<body data-page="user">
+  <header class="topbar">
+    <div class="brand">
+      <img src="assets/logo.png" alt="Logo" onerror="this.style.display='none'"/>
+      <div class="brand-text">
+        <h1 id="companyName">Safári Diversão • TI</h1>
+        <span class="subtitle">Central de Chamados — Usuário</span>
+      </div>
+      <nav class="nav">
+        <a class="link" href="ti.html">🔐 Painel do TI</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>📌 Abrir novo chamado</h2>
+      <form id="formChamado" autocomplete="off">
+        <div class="grid">
+          <div class="field"><label>Nome</label><input id="nome" required/></div>
+          <div class="field"><label>E-mail</label><input id="email" type="email" required/></div>
+          <div class="field"><label>Setor</label><input id="setor" required/></div>
+          <div class="field">
+            <label>Prioridade</label>
+            <select id="prioridade" required>
+              <option>Baixa</option><option selected>Média</option>
+              <option>Alta</option><option>Crítica</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Categoria</label>
+            <select id="categoria" required>
+              <option selected>Rede/Internet</option>
+              <option>E-mail/Outlook</option><option>Impressão</option>
+              <option>Sistema/Software</option><option>Hardware</option>
+              <option>Acesso/Permissão</option><option>Outro</option>
+            </select>
+          </div>
+          <div class="field field-full">
+            <label>Descreva o problema</label>
+            <textarea id="problema" rows="4" required></textarea>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn primary">Abrir chamado</button>
+          <button type="reset" class="btn ghost">Limpar</button>
+        </div>
+        <p class="muted">Após enviar, você verá o número de protocolo.</p>
+      </form>
+    </section>
+
+   <section class="card" id="confirmCard" hidden>
+  <h2>✅ Chamado aberto</h2>
+  <p id="confirmText"></p>
+  <div class="actions">
+    <button class="btn" id="copiarProtocoloBtn">Copiar protocolo</button>
+    <a href="ti.html" class="btn">Ir para o painel do TI</a>
+    <button class="btn ghost" id="novoChamadoBtn">Abrir outro chamado</button>
+  </div>
+</section>
+
+  </main>
+
+  <div id="toast" class="toast"></div>
+  <footer class="footer">
+    <small>© <span id="year"></span> Safári Diversão • TI</small>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
+<!-- Consultar status por protocolo -->
+<section class="card">
+  <h2>🔎 Consultar status do chamado</h2>
+  <div class="grid">
+    <div class="field">
+      <label>Informe o protocolo</label>
+      <input id="consultaProtocolo" placeholder="Ex.: TI-20250919-1234" />
+    </div>
+    <div class="field">
+      <label>&nbsp;</label>
+      <button class="btn" id="consultarBtn">Consultar</button>
+    </div>
+  </div>
+
+  <div id="consultaResultado" class="empty" hidden>
+    <!-- Resultado aparece aqui -->
+  </div>
+</section>
