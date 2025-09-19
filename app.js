@@ -1,6 +1,6 @@
 /* ====== Config ====== */
 const COMPANY_NAME = 'Safári Diversão • TI';
-const API_URL = 'https://script.google.com/macros/library/d/1920wa1gWYGVcDir42ph6UvZbjOTdchDaUUNUCtOF9SQC7xccm25VZ1th/2';
+const API_URL = 'https://script.google.com/macros/s/AKfycbyExpbvMR7X1DQTtEah_taK_1EY2wvzoMdHUaE8oPAGaGzKL5RLa8kFQvwdjDQT5O7BOQ/exec';
 
 document.getElementById('companyName').textContent = COMPANY_NAME;
 document.getElementById('year').textContent = new Date().getFullYear();
@@ -350,6 +350,7 @@ async function renderAdmin(){
 const page = document.body.dataset.page;
 if(page==='user')  initUser();
 if(page==='admin') initAdmin();
+
 
 
 
