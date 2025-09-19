@@ -28,14 +28,21 @@
       <div class="grid">
         <div class="field">
           <label>PIN do TI</label>
-          <input id="pinInput" placeholder="Digite seu PIN" />
+          <input id="pinInput" placeholder="Digite seu PIN (padrão: agua3214)" />
         </div>
         <div class="field">
           <label>&nbsp;</label>
           <button class="btn" id="entrarBtn">Entrar</button>
         </div>
       </div>
-      <p class="muted">Dica: o PIN fica salvo no seu navegador. Se errar, apague e digite novamente.</p>
+
+      <details style="margin-top:.5rem">
+        <summary>Esqueci o PIN</summary>
+        <p class="muted">Clique para limpar o PIN salvo neste navegador e usar o padrão novamente.</p>
+        <button class="btn ghost" id="resetPinBtn" type="button">Resetar PIN para o padrão</button>
+      </details>
+
+      <p class="muted">Dica: o PIN fica salvo no seu navegador.</p>
     </section>
 
     <!-- Dashboard -->
@@ -129,9 +136,7 @@
     <small>© <span id="year"></span> Safári Diversão • TI</small>
   </footer>
 
-  <!-- acrescento ?v=3 para evitar cache -->
-  <script src="app.js?v=3"></script>
+  <!-- cache-buster -->
+  <script src="app.js?v=6"></script>
 </body>
 </html>
-
-
