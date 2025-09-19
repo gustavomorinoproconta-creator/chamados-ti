@@ -1,3 +1,5 @@
+
+
 /* ====== Config ====== */
 const COMPANY_NAME = 'Safári Diversão • TI';  // personalize
 const API_URL = 'https://script.google.com/macros/s/AKfycbyExpbvMR7X1DQTtEah_taK_1EY2wvzoMdHUaE8oPAGaGzKL5RLa8kFQvwdjDQT5O7BOQ/exec';   // URL do Deploy do Apps Script (termina com /exec)
@@ -10,8 +12,19 @@ const $ = (s) => document.querySelector(s);
 const $$ = (s) => document.querySelectorAll(s);
 const toast = (msg, ms=1800) => { const t=$('#toast'); if(!t) return; t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), ms); };
 
+/* ====== Copiar com fallback (HTTPS e HTTP) ====== */
+async function copiar(texto){
+  if (navigator.clipboard && window.isSecureContext) {
+    return navigator.clipboard.writeText(texto);
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = texto; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try { document.execCommand('copy'); } finally { ta.remove(); }
+  }
+}
+
 /* ====== API (Google Apps Script) ====== */
-// Usamos text/plain para evitar preflight CORS em muitos cenários.
 const apiGet = async (params={}) => {
   const url = API_URL + '?' + new URLSearchParams(params);
   const r = await fetch(url);
@@ -40,7 +53,7 @@ const apiDelete   = (id) => apiPost({action:'delete', id});
 function initUser(){
   const form = $('#formChamado');
   const confirmCard = $('#confirmCard');
-  const confirmText = $('#confirmText');
+  const confirmText = $('#confirmText');           // pode não existir se vc já usa <strong id="protocoloText">
   const novoBtn = $('#novoChamadoBtn');
 
   if(form){
@@ -59,10 +72,19 @@ function initUser(){
       try{
         const created = await apiCreate(chamado);
         form.reset();
-        if(confirmCard && confirmText){
+
+        // Mostra protocolo no card (funciona com o layout novo OU antigo)
+        if ($('#protocoloText')) {
+          $('#protocoloText').textContent = created.protocolo;
+          if (confirmCard) confirmCard.hidden = false;
+        } else if (confirmCard && confirmText) {
           confirmCard.hidden = false;
-          confirmText.textContent = `Seu protocolo é ${created.protocolo}. Guarde este código para acompanhar.`;
+          confirmText.innerHTML = `Seu protocolo é <strong>${created.protocolo}</strong>. Guarde este código para acompanhar.`;
         }
+
+        // guarda para o botão "Copiar"
+        window.__ultimoProtocolo = created.protocolo;
+
         toast('Chamado aberto!');
       }catch(err){
         console.error(err);
@@ -71,9 +93,20 @@ function initUser(){
     });
   }
 
+  // Botão "Copiar protocolo"
+  $('#copiarProtocoloBtn')?.addEventListener('click', ()=>{
+    // tenta pegar na ordem: valor guardado → <strong id=protocoloText> → regex no texto do card (TI-... ou CH-...)
+    const viaState = window.__ultimoProtocolo;
+    const viaStrong = $('#protocoloText')?.textContent;
+    const viaRegex = ( ($('#confirmText')?.textContent || '').match(/(CH-\d{6}-\d{3,}|TI-\d{8}-\d{3,4})/) || [] )[0];
+    const codigo = viaState || viaStrong || viaRegex || '';
+    if(!codigo){ toast('Nenhum protocolo para copiar.'); return; }
+    copiar(codigo).then(()=> toast('Protocolo copiado!'));
+  });
+
   novoBtn?.addEventListener('click', ()=>{ if(confirmCard) confirmCard.hidden = true; });
 
-  // Se você adicionou a seção "Consultar status por protocolo" no index.html:
+  // Consultar status por protocolo
   const consultarBtn = $('#consultarBtn');
   const inputProt = $('#consultaProtocolo');
   consultarBtn?.addEventListener('click', async ()=>{
@@ -128,7 +161,7 @@ function initAdmin(){
   $('#entrarBtn')?.addEventListener('click', ()=>{
     const val = $('#pinInput').value.trim();
     if(!val){ toast('Informe um PIN.'); return; }
-    // PIN simples local (não muda com Sheets)
+    // PIN simples local
     const stored = localStorage.getItem('ti_pin');
     if(!stored){ localStorage.setItem('ti_pin', val); }
     else if(stored !== val){ toast('PIN incorreto.'); return; }
@@ -233,7 +266,6 @@ async function renderAdmin(){
     lista && lista.appendChild(li);
   });
 
-  // Ações dos botões
   if(lista){
     lista.onclick = async (e)=>{
       const btn = e.target.closest('button[data-ac]'); if(!btn) return;
@@ -246,7 +278,6 @@ async function renderAdmin(){
         } else if(ac==='concluir'){
           await apiUpdate(id, {status:'Concluído'}); toast('Chamado concluído.'); renderAdmin();
         } else if(ac==='editar'){
-          // Carrega dados atuais e abre modal
           const item = (await apiList()).find(x=>x.id===id);
           $('#editId').value = item.id;
           $('#editNome').value = item.nome;
@@ -262,7 +293,6 @@ async function renderAdmin(){
     };
   }
 
-  // Salvar edições (modal)
   $('#salvarEdicaoBtn')?.addEventListener('click', async ()=>{
     const id = $('#editId').value;
     const fields = {
@@ -287,4 +317,3 @@ async function renderAdmin(){
 const page = document.body.dataset.page;
 if(page==='user') initUser();
 if(page==='admin') initAdmin();
-
