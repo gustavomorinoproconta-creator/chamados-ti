@@ -1,6 +1,6 @@
 /* ====== Config ====== */
 const COMPANY_NAME = 'Safári Diversão • TI';  // personalize
-const API_URL = 'https://script.google.com/macros/s/AKfycbxQ2lUU-bVG2pPjByYjz8oJRtk27h5Y_mPEXUdHvAEvwgYuAacrMrh_YUmvHHsb41ae4g/exec';   // URL do Deploy do Apps Script (termina com /exec)
+const API_URL = 'https://script.google.com/macros/s/AKfycbyExpbvMR7X1DQTtEah_taK_1EY2wvzoMdHUaE8oPAGaGzKL5RLa8kFQvwdjDQT5O7BOQ/exec';   // URL do Deploy do Apps Script (termina com /exec)
 
 document.getElementById('companyName').textContent = COMPANY_NAME;
 document.getElementById('year').textContent = new Date().getFullYear();
@@ -287,3 +287,4 @@ async function renderAdmin(){
 const page = document.body.dataset.page;
 if(page==='user') initUser();
 if(page==='admin') initAdmin();
+
