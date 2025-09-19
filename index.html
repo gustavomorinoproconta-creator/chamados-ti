@@ -60,16 +60,32 @@
       </form>
     </section>
 
-   <section class="card" id="confirmCard" hidden>
-  <h2>✅ Chamado aberto</h2>
-  <p id="confirmText"></p>
-  <div class="actions">
-    <button class="btn" id="copiarProtocoloBtn">Copiar protocolo</button>
-    <a href="ti.html" class="btn">Ir para o painel do TI</a>
-    <button class="btn ghost" id="novoChamadoBtn">Abrir outro chamado</button>
-  </div>
-</section>
+    <!-- Confirmação: agora com <strong id="protocoloText"> -->
+    <section class="card" id="confirmCard" hidden>
+      <h2>✅ Chamado aberto</h2>
+      <p>Seu protocolo é <strong id="protocoloText"></strong>. Guarde este código para acompanhar.</p>
+      <div class="actions">
+        <button class="btn" id="copiarProtocoloBtn">Copiar protocolo</button>
+        <a href="ti.html" class="btn">Ir para o painel do TI</a>
+        <button class="btn ghost" id="novoChamadoBtn">Abrir outro chamado</button>
+      </div>
+    </section>
 
+    <!-- Consultar status por protocolo (agora dentro do <main>) -->
+    <section class="card">
+      <h2>🔎 Consultar status do chamado</h2>
+      <div class="grid">
+        <div class="field">
+          <label>Informe o protocolo</label>
+          <input id="consultaProtocolo" placeholder="Ex.: CH-240919-001" />
+        </div>
+        <div class="field">
+          <label>&nbsp;</label>
+          <button class="btn" id="consultarBtn">Consultar</button>
+        </div>
+      </div>
+      <div id="consultaResultado" class="empty" hidden></div>
+    </section>
   </main>
 
   <div id="toast" class="toast"></div>
@@ -80,21 +96,5 @@
   <script src="app.js"></script>
 </body>
 </html>
-<!-- Consultar status por protocolo -->
-<section class="card">
-  <h2>🔎 Consultar status do chamado</h2>
-  <div class="grid">
-    <div class="field">
-      <label>Informe o protocolo</label>
-      <input id="consultaProtocolo" placeholder="Ex.: TI-20250919-1234" />
-    </div>
-    <div class="field">
-      <label>&nbsp;</label>
-      <button class="btn" id="consultarBtn">Consultar</button>
-    </div>
-  </div>
 
-  <div id="consultaResultado" class="empty" hidden>
-    <!-- Resultado aparece aqui -->
-  </div>
-</section>
+
