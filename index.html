@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -60,10 +59,10 @@
       </form>
     </section>
 
-    <!-- Confirmação: agora com <strong id="protocoloText"> -->
+    <!-- Confirmação (com <strong id="protocoloText"> para exibir) -->
     <section class="card" id="confirmCard" hidden>
       <h2>✅ Chamado aberto</h2>
-      <p>Seu protocolo é <strong id="protocoloText"></strong>. Guarde este código para acompanhar.</p>
+      <p id="confirmText">Seu protocolo é <strong id="protocoloText"></strong>. Guarde este código para acompanhar.</p>
       <div class="actions">
         <button class="btn" id="copiarProtocoloBtn">Copiar protocolo</button>
         <a href="ti.html" class="btn">Ir para o painel do TI</a>
@@ -71,13 +70,13 @@
       </div>
     </section>
 
-    <!-- Consultar status por protocolo (agora dentro do <main>) -->
+    <!-- Consultar status por protocolo -->
     <section class="card">
       <h2>🔎 Consultar status do chamado</h2>
       <div class="grid">
         <div class="field">
           <label>Informe o protocolo</label>
-          <input id="consultaProtocolo" placeholder="Ex.: CH-240919-001" />
+          <input id="consultaProtocolo" placeholder="Ex.: CH-240919-001 ou TI-20250919-0278" />
         </div>
         <div class="field">
           <label>&nbsp;</label>
@@ -93,8 +92,11 @@
     <small>© <span id="year"></span> Safári Diversão • TI</small>
   </footer>
 
-  <script src="app.js"></script>
+  <!-- coloque ?v=2 para forçar recarregar sem cache -->
+  <script src="app.js?v=2"></script>
 </body>
 </html>
+
+
 
 
