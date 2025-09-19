@@ -26,16 +26,33 @@
       <h2>📌 Abrir novo chamado</h2>
       <form id="formChamado" autocomplete="off">
         <div class="grid">
-          <div class="field"><label>Nome</label><input id="nome" required/></div>
-          <div class="field"><label>E-mail</label><input id="email" type="email" required/></div>
-          <div class="field"><label>Setor</label><input id="setor" required/></div>
+          <div class="field">
+            <label>Nome</label>
+            <input id="nome" required/>
+          </div>
+
+          <div class="field">
+            <label>E-mail</label>
+            <input id="email" type="email" required/>
+            <small class="muted">Você receberá um e-mail com o número do protocolo e as atualizações de status para acompanhar a resolução.</small>
+          </div>
+
+          <div class="field">
+            <label>Setor</label>
+            <input id="setor" required/>
+          </div>
+
           <div class="field">
             <label>Prioridade</label>
             <select id="prioridade" required>
               <option>Baixa</option><option selected>Média</option>
               <option>Alta</option><option>Crítica</option>
             </select>
+            <small class="muted">
+              Prazos estimados (SLA): Baixa = 5 dias úteis • Média = 3 dias úteis • Alta = 1 dia útil • Crítica = 4 horas úteis.
+            </small>
           </div>
+
           <div class="field">
             <label>Categoria</label>
             <select id="categoria" required>
@@ -45,6 +62,7 @@
               <option>Acesso/Permissão</option><option>Outro</option>
             </select>
           </div>
+
           <div class="field field-full">
             <label>Descreva o problema</label>
             <textarea id="problema" rows="4" required></textarea>
@@ -59,10 +77,12 @@
       </form>
     </section>
 
-    <!-- Confirmação (com <strong id="protocoloText"> para exibir) -->
+    <!-- Confirmação -->
     <section class="card" id="confirmCard" hidden>
       <h2>✅ Chamado aberto</h2>
-      <p id="confirmText">Seu protocolo é <strong id="protocoloText"></strong>. Guarde este código para acompanhar.</p>
+      <p id="confirmText">
+        Seu protocolo é <strong id="protocoloText"></strong>. Guarde este código para acompanhar.
+      </p>
       <div class="actions">
         <button class="btn" id="copiarProtocoloBtn">Copiar protocolo</button>
         <a href="ti.html" class="btn">Ir para o painel do TI</a>
@@ -92,10 +112,12 @@
     <small>© <span id="year"></span> Safári Diversão • TI</small>
   </footer>
 
-  <!-- coloque ?v=2 para forçar recarregar sem cache -->
-  <script src="app.js?v=2"></script>
+  <!-- cache-buster -->
+  <script src="app.js?v=8"></script>
 </body>
 </html>
+
+
 
 
 
