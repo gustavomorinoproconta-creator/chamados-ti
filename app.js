@@ -11,9 +11,9 @@ const toast = (msg, ms=1800) => {
   const t = $('#toast'); if(!t) return;
   t.textContent = msg; t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'), ms);
-  const fmtBR = (iso) => iso ? new Date(iso).toLocaleString('pt-BR') : '';
-
 };
+// >>> fmtBR fora do toast (disponível para todo o arquivo)
+const fmtBR = (iso) => iso ? new Date(iso).toLocaleString('pt-BR') : '';
 
 /* Copiar com fallback (funciona sem HTTPS) */
 async function copiar(texto){
@@ -86,6 +86,14 @@ function initUser(){
             `Seu protocolo é <strong>${created.protocolo}</strong>. Guarde este código para acompanhar.`;
         }
 
+        // Mostrar prazo (se existir no retorno e se o HTML tiver os elementos)
+        if (created.prazoEm && $('#prazoText') && $('#confirmPrazo')) {
+          $('#prazoText').textContent = fmtBR(created.prazoEm);
+          $('#confirmPrazo').hidden = false;
+        } else if ($('#confirmPrazo')) {
+          $('#confirmPrazo').hidden = true;
+        }
+
         // Guardar para botão "Copiar"
         window.__ultimoProtocolo = created.protocolo;
 
@@ -144,6 +152,7 @@ function renderConsulta(chamado){
         <span class="badge ${prioClass}">Prioridade: ${chamado.prioridade}</span>
         <span class="badge">Prot.: ${chamado.protocolo}</span>
         <span class="badge">Categoria: ${chamado.categoria}</span>
+        ${chamado.prazoEm ? `<span class="badge">Prazo: ${fmtBR(chamado.prazoEm)}</span>` : ``}
       </div>
     </div>
     <div class="ticket-body">
@@ -151,8 +160,8 @@ function renderConsulta(chamado){
       <p style="margin:.35rem 0 0">${chamado.problema}</p>
     </div>
     <div class="ticket-meta">
-      Aberto em ${new Date(chamado.criadoEm).toLocaleString('pt-BR')}
-      ${chamado.atualizadoEm ? ' • Atualizado: '+ new Date(chamado.atualizadoEm).toLocaleString('pt-BR') : ''}
+      Aberto em ${fmtBR(chamado.criadoEm)}
+      ${chamado.atualizadoEm ? ' • Atualizado: '+ fmtBR(chamado.atualizadoEm) : ''}
     </div>
   `;
 }
@@ -200,12 +209,13 @@ function initAdmin(){
     try{
       const dados = await apiList();
       if(!dados.length) return toast('Nada para exportar.');
-      const header = ['protocolo','status','prioridade','categoria','nome','email','setor','problema','criadoEm','atualizadoEm'];
+      const header = ['protocolo','status','prioridade','categoria','nome','email','setor','problema','criadoEm','atualizadoEm','prazoEm'];
       const rows = [header.join(',')];
       dados.forEach(r=>{
         rows.push([r.protocolo,r.status,r.prioridade,r.categoria,r.nome,r.email,r.setor,r.problema,
-          new Date(r.criadoEm).toLocaleString('pt-BR'),
-          r.atualizadoEm ? new Date(r.atualizadoEm).toLocaleString('pt-BR') : ''
+          fmtBR(r.criadoEm),
+          r.atualizadoEm ? fmtBR(r.atualizadoEm) : '',
+          r.prazoEm ? fmtBR(r.prazoEm) : ''
         ].map(x=>`"${String(x).replaceAll('"','""')}"`).join(','));
       });
       const a = document.createElement('a');
@@ -268,6 +278,7 @@ async function renderAdmin(){
           <span class="badge ${prioClass}">Prioridade: ${item.prioridade}</span>
           <span class="badge">Prot.: ${item.protocolo}</span>
           <span class="badge">Categoria: ${item.categoria}</span>
+          ${item.prazoEm ? `<span class="badge">Prazo: ${fmtBR(item.prazoEm)}</span>` : ``}
         </div>
       </div>
       <div class="ticket-body">
@@ -275,8 +286,8 @@ async function renderAdmin(){
         <p style="margin:.35rem 0 0">${item.problema}</p>
       </div>
       <div class="ticket-meta">
-        Aberto em ${new Date(item.criadoEm).toLocaleString('pt-BR')}
-        ${item.atualizadoEm ? ' • Atualizado: '+ new Date(item.atualizadoEm).toLocaleString('pt-BR') : ''}
+        Aberto em ${fmtBR(item.criadoEm)}
+        ${item.atualizadoEm ? ' • Atualizado: '+ fmtBR(item.atualizadoEm) : ''}
       </div>
       <div class="ticket-actions">
         ${item.status!=='Em andamento' ? `<button class="btn" data-ac="andamento" data-id="${item.id}">Iniciar</button>`:''}
@@ -339,4 +350,5 @@ async function renderAdmin(){
 const page = document.body.dataset.page;
 if(page==='user')  initUser();
 if(page==='admin') initAdmin();
+
 
