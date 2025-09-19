@@ -11,6 +11,8 @@ const toast = (msg, ms=1800) => {
   const t = $('#toast'); if(!t) return;
   t.textContent = msg; t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'), ms);
+  const fmtBR = (iso) => iso ? new Date(iso).toLocaleString('pt-BR') : '';
+
 };
 
 /* Copiar com fallback (funciona sem HTTPS) */
@@ -337,3 +339,4 @@ async function renderAdmin(){
 const page = document.body.dataset.page;
 if(page==='user')  initUser();
 if(page==='admin') initAdmin();
+
